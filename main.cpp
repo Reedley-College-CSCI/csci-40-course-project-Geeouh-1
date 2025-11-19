@@ -17,8 +17,21 @@
 
 using namespace std;
 
+struct MovieShow {
+	string title;
+	double rating;
+};
+
+
 int main() {
-	cout << "Welcome to the Marvel and DC Comics movies and shows inventory!" << endl;
 	
+	string fileName;
+	MovieShow project;
+
+	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
+	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
+	getline(cin, fileName);
+
+
     return 0;
 }
