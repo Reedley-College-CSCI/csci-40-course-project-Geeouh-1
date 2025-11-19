@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <iomanip>
+
 
 using namespace std;
 
@@ -35,17 +35,19 @@ int main() {
 	int dcCount = 0;
 	int marvelCount = 0;
 
+	//Main page of the project
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 	getline(cin, fileName);
 
+	//Dc File
 	if (fileName == "dc") {
 		ofstream dcFile("dc.txt");
 		
 		cout << endl << "Welcome to the DC file! " << endl;
 		cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
 
-
+		//inputting DC titles
 		for (int i = 0; i < MAX; i++) {
 			cout << "Title " << i + 1 << ": ";
 			getline(cin, dcProject[i].title);
@@ -55,43 +57,44 @@ int main() {
 			dcCount++;
 		}
 
+		//inputting DC ratings
 		cout << endl << "Please enter your ratings (out of 10.0)" << endl;
 		for (int i = 0; i < dcCount; i++) {
 			cout << dcProject[i].title << ": ";
 			cin >> dcProject[i].rating;
-
-			
 		}
 
 		cout << "thank you!" << endl;
 
 	}
 
-
+	//Marvel File
 	 if (fileName == "marvel") {
 		ofstream marvelFile("marvel.txt");
 
 		cout << endl << "Welcome to the Marvel file! " << endl;
 		cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
-		
-			for (int i = 0; i < MAX; i++) {
-				cout << "Title " << i + 1 << ": ";
-				getline(cin, marvelProject[i].title);
-				if (marvelProject[i].title == "end") {
-					break;
-				}
-				marvelCount++;
-			}
 
-			cout << endl << "Please enter your ratings (out of 10.0)" << endl;
-			 
-			for(int i = 0; i < marvelCount; i++){
-				cout << marvelProject[i].title << ": ";
-				cin >> marvelProject[i].rating;
+		//inputting Marvel titles
+		for (int i = 0; i < MAX; i++) {
+			cout << "Title " << i + 1 << ": ";
+			getline(cin, marvelProject[i].title);
+			if (marvelProject[i].title == "end") {
+				break;
 			}
+			marvelCount++;
+		}
+
+		//inputting Marvel ratings
+		cout << endl << "Please enter your ratings (out of 10.0)" << endl;
+		for(int i = 0; i < marvelCount; i++){
+			cout << marvelProject[i].title << ": ";
+			cin >> marvelProject[i].rating;
+		}
 			
 		cout << "thank you!" << endl;
 		
 	}
+
     return 0;
 }
