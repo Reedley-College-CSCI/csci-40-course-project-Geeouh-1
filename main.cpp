@@ -31,7 +31,7 @@ int main() {
 
 	movieShow dcProject[MAX];
 	movieShow marvelProject[MAX];
-	
+	movieShow dcFav;
 	int dcCount = 0;
 	int marvelCount = 0;
 
@@ -51,6 +51,7 @@ int main() {
 		for (int i = 0; i < MAX; i++) {
 			cout << "Title " << i + 1 << ": ";
 			getline(cin, dcProject[i].title);
+
 			if (dcProject[i].title == "end") {
 				break;
 			}
@@ -63,8 +64,21 @@ int main() {
 			cout << dcProject[i].title << ": ";
 			cin >> dcProject[i].rating;
 		}
-
-		cout << "thank you!" << endl;
+		
+		
+		int dcHighest = dcProject[0].rating;
+		string dcFav = dcProject[0].title;
+		//highest rated DC project
+		for (int i = 1; i < dcCount; i++) {
+			if (dcProject[i].rating > dcHighest) {
+				dcHighest = dcProject[i].rating;
+				dcFav = dcProject[i].title;
+			}
+		}
+		cout << "Your favorite DC project is " << dcFav << "!" << endl;
+			
+	
+		
 
 	}
 
@@ -92,7 +106,17 @@ int main() {
 			cin >> marvelProject[i].rating;
 		}
 			
-		cout << "thank you!" << endl;
+		int marvelHighest = marvelProject[0].rating;
+		string marvelFav = marvelProject[0].title;
+
+		//highest rated Marvel project
+		for (int i = 1; i < marvelCount; i++) {
+			if (marvelProject[i].rating > marvelHighest) {
+				marvelHighest = marvelProject[i].rating;
+				marvelFav = marvelProject[i].title;
+			}
+		}
+		cout << "Your favorite Marvel project is " << marvelFav << "!" << endl;
 		
 	}
 
