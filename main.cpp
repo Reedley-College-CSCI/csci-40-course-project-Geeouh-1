@@ -14,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -27,11 +28,9 @@ struct movieShow {
 int main() {
 	
 	string fileName;
-	string dcProject[MAX];
-	string marvelProject[MAX];
 
-	movieShow dcProject;
-	movieShow marvelProject;
+	movieShow dcProject[MAX];
+	movieShow marvelProject[MAX];
 	
 
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
@@ -41,11 +40,31 @@ int main() {
 	if (fileName == "dc") {
 		ofstream dcFile("dc.txt");
 
-		cout << "Welcome to the DC file! " << endl;
+		cout << endl << "Welcome to the DC file! " << endl;
+		cout << "Enter your favorite DC shows/movies!" << endl;
+		for(int i = 0; i < MAX; i++){
+			cout << "Title " << i + 1 << ": ";
+			getline(cin, dcProject[i].title);
+			
+			cout << "Rating (out of 10.0): ";
+			cin >> dcProject[i].rating;
+			
+		
+		}
 	}
 	else if (fileName == "marvel") {
 		ofstream marvelFile("marvel.txt");
-		cout << "Welcome to the Marvel file! " << endl;
+		cout << endl << "Welcome to the Marvel file! " << endl;
+
+		for(int i = 0; i < MAX; i++){
+			cout << "Title " << (i + 1) << ": ";
+			getline(cin, marvelProject[i].title);
+			
+			cout << "Rating (out of 10.0): ";
+			cin >> marvelProject[i].rating;
+			
+		
+		}
 	}
     return 0;
 }
