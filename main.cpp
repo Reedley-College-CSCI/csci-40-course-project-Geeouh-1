@@ -1,5 +1,5 @@
 // CSCI-40 Final Project
-// Author: [Your Name Here]
+// Author: Giovanni Sosa
 
 /* 
  * This project is an inventory management system for Marvel and DC Comics movies and shows.
@@ -32,7 +32,7 @@ int main() {
 	movieShow dcProject[MAX];
 	movieShow marvelProject[MAX];
 	
-
+	int i = 0;
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 	getline(cin, fileName);
@@ -56,15 +56,21 @@ int main() {
 		ofstream marvelFile("marvel.txt");
 		cout << endl << "Welcome to the Marvel file! " << endl;
 
-		for(int i = 0; i < MAX; i++){
-			cout << "Title " << (i + 1) << ": ";
-			getline(cin, marvelProject[i].title);
-			
-			cout << "Rating (out of 10.0): ";
-			cin >> marvelProject[i].rating;
-			
+
+		cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
 		
-		}
+			for (int i = 0; i < MAX; i++) {
+				cout << "Title " << i + 1 << ": ";
+				getline(cin, marvelProject[i].title);
+				
+				cout << "Rating " << i + 1 << " (out of 10.0): ";
+				cin >> marvelProject[i].rating;
+		
+			}
+			
+			
+		cout << "thank you" << endl;
+		
 	}
     return 0;
 }
