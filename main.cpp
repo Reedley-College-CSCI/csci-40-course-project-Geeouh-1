@@ -17,21 +17,35 @@
 
 using namespace std;
 
-struct MovieShow {
+const int MAX = 20;
+
+struct movieShow {
 	string title;
 	double rating;
 };
 
-
 int main() {
 	
 	string fileName;
-	MovieShow project;
+	string dcProject[MAX];
+	string marvelProject[MAX];
+
+	movieShow dcProject;
+	movieShow marvelProject;
+	
 
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 	getline(cin, fileName);
 
+	if (fileName == "dc") {
+		ofstream dcFile("dc.txt");
 
+		cout << "Welcome to the DC file! " << endl;
+	}
+	else if (fileName == "marvel") {
+		ofstream marvelFile("marvel.txt");
+		cout << "Welcome to the Marvel file! " << endl;
+	}
     return 0;
 }
