@@ -31,7 +31,6 @@ int main() {
 
 	movieShow dcProject[MAX];
 	movieShow marvelProject[MAX];
-	movieShow dcFav;
 	int dcCount = 0;
 	int marvelCount = 0;
 
