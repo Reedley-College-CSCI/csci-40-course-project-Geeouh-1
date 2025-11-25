@@ -41,10 +41,15 @@ int main() {
 
 	//Dc File
 	if (fileName == "dc") {
-		ofstream dcFile("dc.txt");
+		ofstream dcFile;
+		dcFile.open("dc.txt");
+		if(!dcFile){
+			cout << "Error opening file!" << endl;
+			return 1;
+		}
 		
-		cout << endl << "Welcome to the DC file! " << endl;
-		cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
+		cout  << endl << "Welcome to the DC file! " << endl;
+		cout  << "Please enter your favorite DC shows/movies!(Type 'end' to stop)" << endl;
 
 		//inputting DC titles
 		for (int i = 0; i < MAX; i++) {
@@ -78,12 +83,17 @@ int main() {
 			
 	
 		
-
+		dcFile.close();
 	}
 
 	//Marvel File
 	 if (fileName == "marvel") {
-		ofstream marvelFile("marvel.txt");
+		ofstream marvelFile;
+		marvelFile.open("marvel.txt");
+		if (!marvelFile) {
+			cout << "Error opening file!" << endl;
+			return 1;
+		}
 
 		cout << endl << "Welcome to the Marvel file! " << endl;
 		cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
@@ -96,6 +106,7 @@ int main() {
 				break;
 			}
 			marvelCount++;
+
 		}
 
 		//inputting Marvel ratings
