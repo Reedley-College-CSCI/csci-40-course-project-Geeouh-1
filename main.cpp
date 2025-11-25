@@ -25,6 +25,26 @@ struct movieShow {
 	double rating;
 };
 
+void openDCFile() {
+	ifstream dcFile;
+	dcFile.open("dc.txt");
+	if (!dcFile) {
+		cout << "Error opening file!" << endl;
+		return;
+	}
+	// Additional code to read and display contents can be added here
+	dcFile.close();
+}
+void openMarvelFile() {
+	ifstream marvelFile;
+	marvelFile.open("marvel.txt");
+	if (!marvelFile) {
+		cout << "Error opening file!" << endl;
+		return;
+	}
+	// Additional code to read and display contents can be added here
+	marvelFile.close();
+}
 int main() {
 	
 	string fileName;
@@ -48,7 +68,7 @@ int main() {
 			return 1;
 		}
 		
-		cout  << endl << "Welcome to the DC file! " << endl;
+		dcFile  << endl << "Welcome to the DC file! " << endl;
 		cout  << "Please enter your favorite DC shows/movies!(Type 'end' to stop)" << endl;
 
 		//inputting DC titles
@@ -59,6 +79,8 @@ int main() {
 			if (dcProject[i].title == "end") {
 				break;
 			}
+
+			dcFile << dcProject[i].title << endl;
 			dcCount++;
 		}
 
@@ -67,6 +89,8 @@ int main() {
 		for (int i = 0; i < dcCount; i++) {
 			cout << dcProject[i].title << ": ";
 			cin >> dcProject[i].rating;
+
+			dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 		}
 		
 		
@@ -84,7 +108,11 @@ int main() {
 	
 		
 		dcFile.close();
+
+
 	}
+
+
 
 	//Marvel File
 	 if (fileName == "marvel") {
@@ -114,6 +142,8 @@ int main() {
 		for(int i = 0; i < marvelCount; i++){
 			cout << marvelProject[i].title << ": ";
 			cin >> marvelProject[i].rating;
+
+			marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
 		}
 			
 		int marvelHighest = marvelProject[0].rating;
@@ -130,5 +160,7 @@ int main() {
 		
 	}
 
-    return 0;
+	 delete[] dcProject;
+	 delete[] marvelProject;
+	 return 0;
 }
