@@ -51,8 +51,8 @@ int main() {
 	
 	string fileName;
 
-	movieShow dcProject[MAX];
-	movieShow marvelProject[MAX];
+	movieShow *dcProject = new movieShow[MAX];
+	movieShow *marvelProject = new movieShow[MAX];
 	int dcCount = 0;
 	int marvelCount = 0;
 
