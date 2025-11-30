@@ -37,12 +37,15 @@ void openDCFile(movieShow dcTitle[], int& dcCount) {
 	}
 	dcFile.close();
 }
-void openMarvelFile() {
+void openMarvelFile(movieShow marvTitle[], int& marvelCount) {
 	ifstream marvelFile;
 	marvelFile.open("marvel.txt");
 	if (!marvelFile) {
 		cout << "Error opening file!" << endl;
 		return;
+	}
+	while (marvelFile >> marvTitle[marvelCount].title >> marvTitle[marvelCount].rating) {
+		cout << marvTitle[marvelCount].title << " " << marvTitle[marvelCount].rating << endl;
 	}
 	
 	marvelFile.close();
@@ -62,18 +65,19 @@ int main() {
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 
-	while (fileName != "exit") {
+	while (true) {
 
+		
 		getline(cin, fileName);
-	
+
 	//Exit Program
-	if (fileName == "exit") {
+		 if(fileName == "exit") {
 		cout << "Exiting program..." << endl;
 		break;
-	}
+		}
 
 	//Dc File
-	if (fileName == "dc") {
+	else if (fileName == "dc") {
 		ofstream dcFile;
 		dcFile.open("dc.txt");
 		if (!dcFile) {
@@ -103,11 +107,11 @@ int main() {
 		}
 		dcFile.close();
 		cout << "DC file has been updated!" << endl;
-		cout << endl << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
+		cout << endl << "Please enter the file you would like to add a movie/show to(dc/marvel or exit to quit): ";
 	}
 
 	//Marvel File
-	if (fileName == "marvel") {
+	else if (fileName == "marvel") {
 
 		ofstream marvelFile;
 		marvelFile.open("marvel.txt");
@@ -133,11 +137,15 @@ int main() {
 			cin >> marvelProject[i].rating;
 			
 		}
+		for(int i = 0; i < marvelCount; i++){
+			marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
+		}
 		marvelFile.close();
 		cout << "Marvel file has been updated!" << endl;
-		cout << endl << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
+		cout << endl << "Please enter the file you would like to add a movie/show to(dc/marvel or exit to quit): ";
 	}
-
+	
+		
   }
 	cout << "Would you like to view the contents of the files? (yes/no): ";
 	string viewFiles;
@@ -150,7 +158,7 @@ int main() {
 			openDCFile(dcProject, dcCount);
 		}
 		else if (viewFileName == "marvel") {
-			openMarvelFile();
+			openMarvelFile(marvelProject, marvelCount);
 		}
 		else {
 			cout << "Invalid file name!" << endl;
