@@ -25,14 +25,16 @@ struct movieShow {
 	double rating;
 };
 
-void openDCFile() {
+void openDCFile(movieShow dcTitle[], int& dcCount) {
 	ifstream dcFile;
 	dcFile.open("dc.txt");
 	if (!dcFile) {
 		cout << "Error opening file!" << endl;
 		return;
 	}
-	// Additional code to read and display contents can be added here
+	while (dcFile >>  dcTitle[dcCount].title >> dcTitle[dcCount].rating){
+		cout << dcTitle[dcCount].title << " " << dcTitle[dcCount].rating << endl;
+	}
 	dcFile.close();
 }
 void openMarvelFile() {
@@ -42,7 +44,7 @@ void openMarvelFile() {
 		cout << "Error opening file!" << endl;
 		return;
 	}
-	// Additional code to read and display contents can be added here
+	
 	marvelFile.close();
 }
 
@@ -84,6 +86,7 @@ int main() {
 		for (int i = 0; i < MAX; i++) {
 			cout << "Title " << i + 1 << ": ";
 			getline(cin, dcProject[i].title);
+			
 			if (dcProject[i].title == "end") {
 				break;
 			}
@@ -94,6 +97,8 @@ int main() {
 		for (int i = 0; i < dcCount; i++) {
 			cout << dcProject[i].title << ": ";
 			cin >> dcProject[i].rating;
+		}
+		for(int i = 0; i < dcCount; i++){
 			dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 		}
 		dcFile.close();
@@ -126,7 +131,7 @@ int main() {
 		for (int i = 0; i < marvelCount; i++) {
 			cout << marvelProject[i].title << ": ";
 			cin >> marvelProject[i].rating;
-			marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
+			
 		}
 		marvelFile.close();
 		cout << "Marvel file has been updated!" << endl;
@@ -134,6 +139,23 @@ int main() {
 	}
 
   }
+	cout << "Would you like to view the contents of the files? (yes/no): ";
+	string viewFiles;
+	cin >> viewFiles;
+	if (viewFiles == "yes") {
+		cout << "What file would you like to view? (dc/marvel): ";
+		string viewFileName;
+		cin >> viewFileName;
+		if (viewFileName == "dc") {
+			openDCFile(dcProject, dcCount);
+		}
+		else if (viewFileName == "marvel") {
+			openMarvelFile();
+		}
+		else {
+			cout << "Invalid file name!" << endl;
+		}
+	}
 	 delete[] dcProject;
 	 delete[] marvelProject;
 	 
