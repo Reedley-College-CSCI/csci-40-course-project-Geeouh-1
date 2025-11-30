@@ -59,7 +59,16 @@ int main() {
 	//Main page of the project
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
-	getline(cin, fileName);
+
+	while (fileName != "exit") {
+
+		getline(cin, fileName);
+	
+	//Exit Program
+	if (fileName == "exit") {
+		cout << "Exiting program..." << endl;
+		break;
+	}
 
 	//Dc File
 	if (fileName == "dc") {
@@ -87,37 +96,44 @@ int main() {
 			cin >> dcProject[i].rating;
 			dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 		}
+		dcFile.close();
+		cout << "DC file has been updated!" << endl;
+		cout << endl << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 	}
 
 	//Marvel File
-	 if (fileName == "marvel") {
-		
-		 ofstream marvelFile;
-		 marvelFile.open("marvel.txt");
-		 if (!marvelFile) {
-			 cout << "Error opening file!" << endl;
-			 return 1;
-		 }
-		 cout << endl << "Welcome to the Marvel file! " << endl;
-		 cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
-		 //inputting Marvel titles
-		 for (int i = 0; i < MAX; i++) {
-			 cout << "Title " << i + 1 << ": ";
-			 getline(cin, marvelProject[i].title);
-			 if (marvelProject[i].title == "end") {
-				 break;
-			 }
-			 marvelCount++;
-		 }
-		 //inputting Marvel ratings
-		 cout << endl << "Please enter your ratings (out of 10.0)" << endl;
-		 for (int i = 0; i < marvelCount; i++) {
-			 cout << marvelProject[i].title << ": ";
-			 cin >> marvelProject[i].rating;
-			 marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
-		 }
+	if (fileName == "marvel") {
+
+		ofstream marvelFile;
+		marvelFile.open("marvel.txt");
+		if (!marvelFile) {
+			cout << "Error opening file!" << endl;
+			return 1;
+		}
+		cout << endl << "Welcome to the Marvel file! " << endl;
+		cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
+		//inputting Marvel titles
+		for (int i = 0; i < MAX; i++) {
+			cout << "Title " << i + 1 << ": ";
+			getline(cin, marvelProject[i].title);
+			if (marvelProject[i].title == "end") {
+				break;
+			}
+			marvelCount++;
+		}
+		//inputting Marvel ratings
+		cout << endl << "Please enter your ratings (out of 10.0)" << endl;
+		for (int i = 0; i < marvelCount; i++) {
+			cout << marvelProject[i].title << ": ";
+			cin >> marvelProject[i].rating;
+			marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
+		}
+		marvelFile.close();
+		cout << "Marvel file has been updated!" << endl;
+		cout << endl << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 	}
 
+  }
 	 delete[] dcProject;
 	 delete[] marvelProject;
 	 
