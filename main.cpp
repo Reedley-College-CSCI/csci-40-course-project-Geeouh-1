@@ -29,7 +29,7 @@ void openDCFile(movieShow dcTitle[], int& dcCount);
 void openMarvelFile(movieShow marvTitle[], int& marvelCount);
 void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
 void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
-
+void sortRatingDC(movieShow dcTitle[], int& dcCount);
 int main() {
 
 	string fileName;
@@ -196,6 +196,24 @@ void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], in
 	cout << endl;
 
 	if (sortName == "dc") {
+		sortRatingDC(dcTitle, dcCount);
+	}
+
+
+}
+void sortRatingDC(movieShow dcTitle[], int& dcCount) {
+	int dcRateSort;
+	cout << "How would you like to sort the DC file by rating (highest to lowest)?" << endl;
+	cout << "1) Highest to Lowest" << endl;
+	cout << "2) Lowest to Highest" << endl;
+	cout << endl << "Rating option: ";
+	cin >> dcRateSort;
+
+	if (dcRateSort != 1 && dcRateSort != 2) {
+		cout << "Invalid option." << endl;
+	}
+
+	if (dcRateSort == 1) {
 		openDCFile(dcTitle, dcCount);
 		cout << endl;
 		bool swapped;
@@ -216,11 +234,38 @@ void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], in
 			}
 			j++;
 		} while (swapped);
-		
+
 		for (int i = 0; i < dcCount; i++) {
 			cout << dcTitle[i].title << ": " << dcTitle[i].rating << endl;
 		}
+
 	}
 
+	if (dcRateSort == 2) {
+		openDCFile(dcTitle, dcCount);
+		cout << endl;
+		bool swapped;
+		int j = 0;
+		do {
+			swapped = false;
+			for (int i = 0; i < dcCount - 1 - j; i++) {
 
+				if (dcTitle[i].rating > dcTitle[i + 1].rating) {
+					double temp = dcTitle[i].rating;
+					string temp2 = dcTitle[i].title;
+					dcTitle[i].rating = dcTitle[i + 1].rating;
+					dcTitle[i].title = dcTitle[i + 1].title;
+					dcTitle[i + 1].rating = temp;
+					dcTitle[i + 1].title = temp2;
+					swapped = true;
+				}
+			}
+			j++;
+		} while (swapped);
+
+		for (int i = 0; i < dcCount; i++) {
+			cout << dcTitle[i].title << ": " << dcTitle[i].rating << endl;
+		}
+
+	}
 }
