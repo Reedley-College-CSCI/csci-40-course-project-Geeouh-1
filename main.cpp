@@ -30,7 +30,8 @@ void openMarvelFile(movieShow marvTitle[], int& marvelCount);
 void openAllFile(movieShow allTitle[], int& allCount);
 void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount);
-void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
+void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
+	movieShow allTitle[], int& allCount);
 void sortRatingDC(movieShow dcTitle[], int& dcCount);
 int main() {
 
@@ -149,12 +150,13 @@ int main() {
 		viewFile(dcProject, dcCount, marvelProject, marvelCount, allProject, allCount);
 	}
 	if (option == "B" || option == "b") {
-		sortByRating(dcProject, dcCount, marvelProject, marvelCount);
+		sortByRating(dcProject, dcCount, marvelProject, marvelCount, allProject, allCount);
 	}
 
 
 	 delete[] dcProject;
 	 delete[] marvelProject;
+	 delete[] allProject;
 	 
 	 return 0;
 }
@@ -215,8 +217,9 @@ void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 		cout << "Invalid file name!" << endl;
 	}
 }
-void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount) {
-	cout << "Which file would you like to sort by rating(dc/marvel): ";
+void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
+	movieShow allTitle[], int& allCount) {
+	cout << "Which file would you like to sort by rating(dc/marvel/all): ";
 	string sortName;
 	cin >> sortName;
 	cout << endl;
@@ -224,7 +227,9 @@ void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], in
 	if (sortName == "dc") {
 		sortRatingDC(dcTitle, dcCount);
 	}
-
+	if (sortName == "all") {
+		sortRatingAll(allTitle, allCount);
+	}
 
 }
 void sortRatingDC(movieShow dcTitle[], int& dcCount) {
@@ -291,6 +296,74 @@ void sortRatingDC(movieShow dcTitle[], int& dcCount) {
 
 		for (int i = 0; i < dcCount; i++) {
 			cout << dcTitle[i].title << ": " << dcTitle[i].rating << endl;
+		}
+
+	}
+}
+void sortRatingAll(movieShow allTitle[], int& allCount){
+	int allRateSort;
+	cout << "How would you like to sort the ALL file by rating (highest to lowest)?" << endl;
+	cout << "1) Highest to Lowest" << endl;
+	cout << "2) Lowest to Highest" << endl;
+	cout << endl << "Rating option: ";
+	cin >> allRateSort;
+
+	if (allRateSort != 1 && allRateSort != 2) {
+		cout << "Invalid option." << endl;
+	}
+
+	if (allRateSort == 1) {
+		openAllFile(allTitle, allCount);
+		cout << endl;
+		bool swapped;
+		int j = 0;
+		do {
+			swapped = false;
+			for (int i = 0; i < allCount - 1 - j; i++) {
+
+				if (allTitle[i].rating < allTitle[i + 1].rating) {
+					double temp = allTitle[i].rating;
+					string temp2 = allTitle[i].title;
+					allTitle[i].rating = allTitle[i + 1].rating;
+					allTitle[i].title = allTitle[i + 1].title;
+					allTitle[i + 1].rating = temp;
+					allTitle[i + 1].title = temp2;
+					swapped = true;
+				}
+			}
+			j++;
+		} while (swapped);
+
+		for (int i = 0; i < allCount; i++) {
+			cout << allTitle[i].title << ": " << allTitle[i].rating << endl;
+		}
+
+	}
+
+	if (allRateSort == 2) {
+		openAllFile(allTitle, allCount);
+		cout << endl;
+		bool swapped;
+		int j = 0;
+		do {
+			swapped = false;
+			for (int i = 0; i < allCount - 1 - j; i++) {
+
+				if (allTitle[i].rating > allTitle[i + 1].rating) {
+					double temp = allTitle[i].rating;
+					string temp2 = allTitle[i].title;
+					allTitle[i].rating = allTitle[i + 1].rating;
+					allTitle[i].title = allTitle[i + 1].title;
+					allTitle[i + 1].rating = temp;
+					allTitle[i + 1].title = temp2;
+					swapped = true;
+				}
+			}
+			j++;
+		} while (swapped);
+
+		for (int i = 0; i < allCount; i++) {
+			cout << allTitle[i].title << ": " << allTitle[i].rating << endl;
 		}
 
 	}
