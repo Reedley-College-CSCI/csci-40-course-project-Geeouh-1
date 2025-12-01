@@ -28,6 +28,7 @@ struct movieShow {
 void openDCFile(movieShow dcTitle[], int& dcCount);
 void openMarvelFile(movieShow marvTitle[], int& marvelCount);
 void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
+void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
 
 int main() {
 
@@ -126,6 +127,7 @@ int main() {
 
 	}
 	string option;
+	cout << endl;
 	cout << "Choose an option!" << endl;
 	cout << "A) View Files" << endl;
 	cout << "B) Sort by rating" << endl;
@@ -136,7 +138,11 @@ int main() {
 	if (option == "A" || option == "a") {
 		viewFile(dcProject, dcCount, marvelProject, marvelCount);
 	}
-	
+	if (option == "B" || option == "b") {
+		sortByRating(dcProject, dcCount, marvelProject, marvelCount);
+	}
+
+
 	 delete[] dcProject;
 	 delete[] marvelProject;
 	 
@@ -172,6 +178,7 @@ void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 	cout << "What file would you like to view? (dc/marvel): ";
 	string viewFileName;
 	cin >> viewFileName;
+	cout << endl;
 	if (viewFileName == "dc") {
 		openDCFile( dcTitle,  dcCount);
 	}
@@ -182,4 +189,38 @@ void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 		cout << "Invalid file name!" << endl;
 	}
 }
+void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount) {
+	cout << "Which file would you like to sort by rating(dc/marvel): ";
+	string sortName;
+	cin >> sortName;
+	cout << endl;
 
+	if (sortName == "dc") {
+		openDCFile(dcTitle, dcCount);
+		cout << endl;
+		bool swapped;
+		int j = 0;
+		do {
+			swapped = false;
+			for (int i = 0; i < dcCount - 1 - j; i++) {
+
+				if (dcTitle[i].rating < dcTitle[i + 1].rating) {
+					double temp = dcTitle[i].rating;
+					string temp2 = dcTitle[i].title;
+					dcTitle[i].rating = dcTitle[i + 1].rating;
+					dcTitle[i].title = dcTitle[i + 1].title;
+					dcTitle[i + 1].rating = temp;
+					dcTitle[i + 1].title = temp2;
+					swapped = true;
+				}
+			}
+			j++;
+		} while (swapped);
+		
+		for (int i = 0; i < dcCount; i++) {
+			cout << dcTitle[i].title << ": " << dcTitle[i].rating << endl;
+		}
+	}
+
+
+}
