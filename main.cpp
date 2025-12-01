@@ -27,7 +27,9 @@ struct movieShow {
 
 void openDCFile(movieShow dcTitle[], int& dcCount);
 void openMarvelFile(movieShow marvTitle[], int& marvelCount);
-void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
+void openAllFile(movieShow allTitle[], int& allCount);
+void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
+	movieShow allTitle[], int& allCount);
 void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount);
 void sortRatingDC(movieShow dcTitle[], int& dcCount);
 int main() {
@@ -36,13 +38,17 @@ int main() {
 
 	movieShow* dcProject = new movieShow[MAX];
 	movieShow* marvelProject = new movieShow[MAX];
+	movieShow* allProject = new movieShow[MAX];
 	int dcCount = 0;
 	int marvelCount = 0;
+	int allCount = 0;
 
 	//Main page of the project
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 
+	ofstream allFile;
+	allFile.open("allProjects.txt");
 	while (true) {
 
 
@@ -73,6 +79,7 @@ int main() {
 					break;
 				}
 				dcCount++;
+				allCount++;
 			}
 			//inputting DC ratings
 			cout << endl << "Please enter your ratings (out of 10.0)" << endl;
@@ -82,6 +89,7 @@ int main() {
 			}
 			for (int i = 0; i < dcCount; i++) {
 				dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
+				allFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 			}
 			dcFile.close();
 			cout << "DC file has been updated!" << endl;
@@ -107,6 +115,7 @@ int main() {
 					break;
 				}
 				marvelCount++;
+				allCount++;
 			}
 			//inputting Marvel ratings
 			cout << endl << "Please enter your ratings (out of 10.0)" << endl;
@@ -117,7 +126,7 @@ int main() {
 			}
 			for (int i = 0; i < marvelCount; i++) {
 				marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
-
+				allFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
 			}
 			marvelFile.close();
 			cout << "Marvel file has been updated!" << endl;
@@ -126,6 +135,7 @@ int main() {
 
 
 	}
+	allFile.close();
 	string option;
 	cout << endl;
 	cout << "Choose an option!" << endl;
@@ -136,7 +146,7 @@ int main() {
 	cout << endl << "Option: ";
 	cin >> option;
 	if (option == "A" || option == "a") {
-		viewFile(dcProject, dcCount, marvelProject, marvelCount);
+		viewFile(dcProject, dcCount, marvelProject, marvelCount, allProject, allCount);
 	}
 	if (option == "B" || option == "b") {
 		sortByRating(dcProject, dcCount, marvelProject, marvelCount);
@@ -174,8 +184,21 @@ void openMarvelFile(movieShow marvTitle[], int& marvelCount) {
 
 	marvelFile.close();
 }
-void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount) {
-	cout << "What file would you like to view? (dc/marvel): ";
+void openAllFile(movieShow allTitle[], int& allCount) {
+	ifstream allFile;
+	allFile.open("allProjects.txt");
+	if (!allFile) {
+		cout << "Error opening file!" << endl;
+		return;
+	}
+	while (allFile >> allTitle[allCount].title >> allTitle[allCount].rating) {
+		cout << allTitle[allCount].title << " " << allTitle[allCount].rating << endl;
+	}
+	allFile.close();
+}
+void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
+	movieShow allTitle[], int& allCount) {
+	cout << "What file would you like to view? (dc/marvel/all): ";
 	string viewFileName;
 	cin >> viewFileName;
 	cout << endl;
@@ -184,6 +207,9 @@ void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 	}
 	else if (viewFileName == "marvel") {
 		openMarvelFile(marvelTitle, marvelCount);
+	}
+	else if (viewFileName == "all") {
+		openAllFile(allTitle, allCount);
 	}
 	else {
 		cout << "Invalid file name!" << endl;
