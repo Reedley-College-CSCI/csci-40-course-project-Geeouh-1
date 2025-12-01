@@ -25,15 +25,21 @@ struct movieShow {
 	double rating;
 };
 
+//Reading files
 void openDCFile(movieShow dcTitle[], int& dcCount);
 void openMarvelFile(movieShow marvTitle[], int& marvelCount);
 void openAllFile(movieShow allTitle[], int& allCount);
+//Option choices
 void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount);
 void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount);
+//Sorting functions
 void sortRatingDC(movieShow dcTitle[], int& dcCount);
 void sortRatingAll(movieShow allTitle[], int& allCount);
+//Options Menu
+void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount);
 int main() {
 
 	string fileName;
@@ -142,6 +148,19 @@ int main() {
 
 	}
 	allFile.close();
+
+	optionsMenu(allProject, marvelProject, dcProject, allCount, marvelCount, dcCount);
+	
+
+	 delete[] dcProject;
+	 delete[] marvelProject;
+	 delete[] allProject;
+	 
+	 return 0;
+}
+//Options Menu function
+void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[], 
+	int& allCount, int& marvelCount, int& dcCount) {
 	string option;
 	cout << endl;
 	cout << "Choose an option!" << endl;
@@ -152,20 +171,14 @@ int main() {
 	cout << endl << "Option: ";
 	cin >> option;
 	if (option == "A" || option == "a") {
-		viewFile(dcProject, dcCount, marvelProject, marvelCount, allProject, allCount);
+		viewFile(dcTitle, dcCount,  marvelTitle,  marvelCount,
+			 allTitle, allCount);
 	}
 	if (option == "B" || option == "b") {
-		sortByRating(dcProject, dcCount, marvelProject, marvelCount, allProject, allCount);
+		sortByRating(dcTitle, dcCount, marvelTitle, marvelCount, allTitle, allCount);
 	}
-
-
-	 delete[] dcProject;
-	 delete[] marvelProject;
-	 delete[] allProject;
-	 
-	 return 0;
 }
-
+//Reading File functions
 void openDCFile(movieShow dcTitle[], int& dcCount) {
 	ifstream dcFile;
 	dcFile.open("dc.txt");
@@ -203,6 +216,7 @@ void openAllFile(movieShow allTitle[], int& allCount) {
 	}
 	allFile.close();
 }
+//Option choices Functions
 void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount) {
 	cout << "What file would you like to view? (dc/marvel/all): ";
@@ -237,6 +251,7 @@ void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], in
 	}
 
 }
+//sorting functions
 void sortRatingDC(movieShow dcTitle[], int& dcCount) {
 	int dcRateSort;
 	cout << "How would you like to sort the DC file by rating (highest to lowest)?" << endl;
