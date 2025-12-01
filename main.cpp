@@ -18,7 +18,7 @@
 
 using namespace std;
 
-const int MAX = 20;
+const int MAX = 50;
 
 struct movieShow {
 	string title;
@@ -33,6 +33,7 @@ void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount);
 void sortRatingDC(movieShow dcTitle[], int& dcCount);
+void sortRatingAll(movieShow allTitle[], int& allCount);
 int main() {
 
 	string fileName;
@@ -75,7 +76,7 @@ int main() {
 			for (int i = 0; i < MAX; i++) {
 				cout << "Title " << i + 1 << ": ";
 				getline(cin, dcProject[i].title);
-
+				
 				if (dcProject[i].title == "end") {
 					break;
 				}
@@ -91,6 +92,8 @@ int main() {
 			for (int i = 0; i < dcCount; i++) {
 				dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 				allFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
+				allProject[i + marvelCount].title = dcProject[i].title;
+				allProject[i + marvelCount].rating = dcProject[i].rating;
 			}
 			dcFile.close();
 			cout << "DC file has been updated!" << endl;
@@ -128,6 +131,8 @@ int main() {
 			for (int i = 0; i < marvelCount; i++) {
 				marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
 				allFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
+				allProject[i + dcCount].title = marvelProject[i].title;
+				allProject[i + dcCount].rating = marvelProject[i].rating;
 			}
 			marvelFile.close();
 			cout << "Marvel file has been updated!" << endl;
