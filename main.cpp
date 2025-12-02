@@ -62,14 +62,11 @@ int main() {
 
 		getline(cin, fileName);
 
-		//Exit Program
-		if (fileName == "exit") {
-			cout << "Exiting program..." << endl;
-			break;
-		}
+		
 
-		//Dc File
-		else if (fileName == "dc") {
+		//If Dc File is selected first program
+		if (fileName == "dc") {
+
 			ofstream dcFile;
 			dcFile.open("dc.txt");
 			if (!dcFile) {
@@ -102,13 +99,61 @@ int main() {
 				allProject[i + marvelCount].rating = dcProject[i].rating;
 			}
 			dcFile.close();
+			//After DC File is done, user will choose to leave or go to Marvel file
 			cout << "DC file has been updated!" << endl;
 			cout << endl << "Please enter 'marvel' to enter Marvel titles or 'exit' to leave this page: ";
 			
+			//Exit Program option
+			if (fileName == "exit") {
+			cout << "Exiting program..." << endl;
+
+			}
+			
+			//Marvil file option after DC file
+			if (fileName == "marvel") {
+
+					ofstream marvelFile;
+					marvelFile.open("marvel.txt");
+					if (!marvelFile) {
+					cout << "Error opening file!" << endl;
+					return 1;
+					}
+
+					cout << endl << "Welcome to the Marvel file! " << endl;
+					cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
+
+					//inputting Marvel titles
+					for (int i = 0; i < MAX; i++) {
+					cout << "Title " << i + 1 << ": ";
+					getline(cin, marvelProject[i].title);
+					if (marvelProject[i].title == "end") {
+						break;
+					}
+					marvelCount++;
+					allCount++;
+					}
+
+					//inputting Marvel ratings
+					cout << endl << "Please enter your ratings (out of 10.0)" << endl;
+					for (int i = 0; i < marvelCount; i++) {
+					cout << marvelProject[i].title << ": ";
+					cin >> marvelProject[i].rating;
+					}
+
+					for (int i = 0; i < marvelCount; i++) {
+						marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
+						allFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
+						allProject[i + dcCount].title = marvelProject[i].title;
+						allProject[i + dcCount].rating = marvelProject[i].rating;
+					}
+					marvelFile.close();
+					cout << "Marvel file has been updated!" << endl;
+			}
+					
 		}
 
-		//Marvel File
-		else if (fileName == "marvel") {
+		//If Marvel File is selected first program 
+		if (fileName == "marvel") {
 
 			ofstream marvelFile;
 			marvelFile.open("marvel.txt");
@@ -142,8 +187,50 @@ int main() {
 				allProject[i + dcCount].rating = marvelProject[i].rating;
 			}
 			marvelFile.close();
+
+			//After Marvel File is done, user will choose to leave or go to DC file
 			cout << "Marvel file has been updated!" << endl;
 			cout << endl << "Please enter the file you would like to add a movie/show to(dc/marvel or exit to quit): ";
+
+			if (fileName == "exit") {
+				cout << "Exiting program..." << endl;
+
+			}
+
+			if (fileName == "dc") {
+				ofstream dcFile;
+				dcFile.open("dc.txt");
+				if (!dcFile) {
+					cout << "Error opening file!" << endl;
+					return 1;
+				}
+				cout << endl << "Welcome to the DC file! " << endl;
+				cout << "Please enter your favorite DC shows/movies!(Type 'end' to stop)" << endl;
+				//inputting DC titles
+				for (int i = 0; i < MAX; i++) {
+					cout << "Title " << i + 1 << ": ";
+					getline(cin, dcProject[i].title);
+
+					if (dcProject[i].title == "end") {
+						break;
+					}
+					dcCount++;
+					allCount++;
+				}
+				//inputting DC ratings
+				cout << endl << "Please enter your ratings (out of 10.0)" << endl;
+				for (int i = 0; i < dcCount; i++) {
+					cout << dcProject[i].title << ": ";
+					cin >> dcProject[i].rating;
+				}
+				for (int i = 0; i < dcCount; i++) {
+					dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
+					allFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
+					allProject[i + marvelCount].title = dcProject[i].title;
+					allProject[i + marvelCount].rating = dcProject[i].rating;
+				}
+				dcFile.close();
+
 		}
 
 
