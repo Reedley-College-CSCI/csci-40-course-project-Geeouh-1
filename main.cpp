@@ -50,21 +50,26 @@ int main() {
 	int dcCount = 0;
 	int marvelCount = 0;
 	int allCount = 0;
-
+	int dcOpen = 0;
+	int marvelOpen = 0;
 	//Main page of the project
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
 	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
 
 	ofstream allFile;
 	allFile.open("allProjects.txt");
-	
-
 	while (true) {
 
 		getline(cin, fileName);
-
+		
 		if (fileName == "dc") {
-
+			if (dcOpen == 1) {
+				if (fileName == "dc") {
+					cout << "You have already added to the DC file." << endl;
+					cout << "Please choose another file to add to('marvel' or 'exit' to leave): ";
+					continue;
+				}
+			}
 			ofstream dcFile;
 			dcFile.open("dc.txt");
 			if (!dcFile) {
@@ -97,11 +102,20 @@ int main() {
 				allProject[i].rating = dcProject[i].rating;
 			}
 
+			dcOpen++;
 			dcFile.close();
-			//After DC File is done, user will choose to leave or go to Marvel file
-			cout << "DC file has been updated!" << endl;
+			
+				//After DC File is done, user will choose to leave or go to Marvel file
+			
+				cout << "DC file has been updated!" << endl;
 
-		if(fileName == "marvel") {
+				cout << "Please choose another file to add to('marvel' or 'exit' to leave): ";
+			
+				
+		}
+			
+
+		if (fileName == "marvel") {
 
 				ofstream marvelFile;
 				marvelFile.open("marvel.txt");
@@ -138,12 +152,13 @@ int main() {
 
 				//After Marvel File is done, user will choose to leave or go to DC file
 				cout << "Marvel file has been updated!" << endl;
+		}
+
+		if(fileName == "exit") {
+			cout << "Exiting the program..." << endl;
+			break;
+		}
 	}
-
-	
-	
-
-		
 	allFile.close();
 
 	optionsMenu(allProject, marvelProject, dcProject, allCount, marvelCount, dcCount);
@@ -152,7 +167,6 @@ int main() {
 	delete[] dcProject;
 	delete[] marvelProject;
 	delete[] allProject;
-
 	return 0;
 }
 //Options Menu function
