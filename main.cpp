@@ -65,7 +65,7 @@ int main() {
 		if (fileName == "dc") {
 			if (dcOpen == 1) {
 				if (fileName == "dc") {
-					cout << "You have already added to the DC file." << endl;
+					cout << "Can't add to DC File right now. Please wait until the Options Menu." << endl;
 					cout << "Please choose another file to add to('marvel' or 'exit' to leave): ";
 					continue;
 				}
@@ -116,7 +116,13 @@ int main() {
 			
 
 		if (fileName == "marvel") {
-
+			if (marvelOpen == 1) {
+				if (fileName == "dc") {
+					cout << "Can't add to Marvel File right now. Please wait until the Options Menu." << endl;
+					cout << "Please choose another file to add to('dc' or 'exit' to leave): ";
+					continue;
+				}
+			}
 				ofstream marvelFile;
 				marvelFile.open("marvel.txt");
 				if (!marvelFile) {
@@ -149,13 +155,17 @@ int main() {
 					allProject[i].rating = marvelProject[i].rating;
 				}
 				marvelFile.close();
-
+				marvelOpen++;
 				//After Marvel File is done, user will choose to leave or go to DC file
 				cout << "Marvel file has been updated!" << endl;
 		}
 
 		if(fileName == "exit") {
 			cout << "Exiting the program..." << endl;
+			break;
+		}
+		if(dcOpen ==1 && marvelOpen ==1) {
+			cout << "Both files have been updated. Proceeding to Options Menu..." << endl;
 			break;
 		}
 	}
