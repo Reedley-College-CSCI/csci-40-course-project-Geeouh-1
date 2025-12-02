@@ -57,7 +57,7 @@ int main() {
 
 	ofstream allFile;
 	allFile.open("allProjects.txt");
-	while (true) {
+	
 
 
 		getline(cin, fileName);
@@ -103,7 +103,8 @@ int main() {
 			}
 			dcFile.close();
 			cout << "DC file has been updated!" << endl;
-			cout << endl << "Please enter the file you would like to add a movie/show to(dc/marvel or exit to quit): ";
+			cout << endl << "Please enter 'marvel' to enter Marvel titles or 'exit' to leave this page: ";
+			
 		}
 
 		//Marvel File
@@ -146,7 +147,7 @@ int main() {
 		}
 
 
-	}
+	
 	allFile.close();
 
 	optionsMenu(allProject, marvelProject, dcProject, allCount, marvelCount, dcCount);
