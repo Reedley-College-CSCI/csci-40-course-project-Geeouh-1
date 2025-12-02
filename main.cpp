@@ -54,7 +54,7 @@ int main() {
 	int marvelOpen = 0;
 	//Main page of the project
 	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
-	cout << "Please enter the file you would like to add a movie/show to(dc or marvel): ";
+	cout << "Please enter the file you would like to add a movie/show to('dc' or 'marvel'): ";
 
 	ofstream allFile;
 	allFile.open("allProjects.txt");
@@ -104,11 +104,8 @@ int main() {
 
 			dcOpen++;
 			dcFile.close();
-			
-				//After DC File is done, user will choose to leave or go to Marvel file
-			
+			//After DC File is done, user will choose to leave or go to Marvel file
 				cout << "DC file has been updated!" << endl;
-
 				cout << "Please choose another file to add to('marvel' or 'exit' to leave): ";
 			
 				
@@ -117,7 +114,8 @@ int main() {
 
 		if (fileName == "marvel") {
 			if (marvelOpen == 1) {
-				if (fileName == "dc") {
+				if (fileName == "marvel") {
+					cout << endl;
 					cout << "Can't add to Marvel File right now. Please wait until the Options Menu." << endl;
 					cout << "Please choose another file to add to('dc' or 'exit' to leave): ";
 					continue;
@@ -158,15 +156,23 @@ int main() {
 				marvelOpen++;
 				//After Marvel File is done, user will choose to leave or go to DC file
 				cout << "Marvel file has been updated!" << endl;
+				cout << "Please choose another file to add to('dc' or 'exit' to leave): ";
 		}
 
 		if(fileName == "exit") {
+
 			cout << "Exiting the program..." << endl;
 			break;
 		}
 		if(dcOpen ==1 && marvelOpen ==1) {
-			cout << "Both files have been updated. Proceeding to Options Menu..." << endl;
+			cout << endl << endl;
+			cout << "Both files have been updated! Proceeding to Options Menu..." << endl;
 			break;
+		}
+
+		else if(fileName != "dc" && fileName != "marvel" && fileName != "exit") {
+			cout << "Invalid file name!" << endl;
+			cout << "Please choose another file to add to('dc', 'marvel' or 'exit' to leave): ";
 		}
 	}
 	allFile.close();
