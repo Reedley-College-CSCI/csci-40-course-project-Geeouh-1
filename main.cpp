@@ -25,6 +25,7 @@ struct movieShow {
 	string title;
 	double rating;
 };
+//allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen
 
 //Reading files
 void openDCFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
@@ -90,13 +91,35 @@ int main() {
 			cout << "Please enter your favorite DC shows/movies!(Type 'end' to stop)" << endl;
 			//inputting DC titles
 			for (int i = 0; i < MAX; i++) {
+				string DCinput;
 				cout << "Title " << i + 1 << ": ";
 				getline(cin, dcProject[i].title);
 				if (dcProject[i].title == "end") {
 					break;
 				}
 				cout << dcProject[i].title << "'s rating: ";
-				cin >> dcProject[i].rating;
+				try {
+					double rating = stod(DCinput);
+					if (rating > 0.0 && rating <= 10.0) {
+						dcProject[i].rating = rating;
+					}
+					else {
+						cout << "Rating must be between 0.0 and 10.0";
+						i--;
+						continue;
+					}
+				}
+				catch (invalid_argument&) {
+					cout << "Invalid rating input! Please enter a numeric value." << endl;
+					i--;
+					continue;
+				}
+				catch (out_of_range&) {
+					cout << "out of range!" << endl;
+					i--;
+					continue;
+				}
+				
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 				dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
@@ -138,10 +161,32 @@ int main() {
 			cout << "Please enter your favorite Marvel shows/movies!(Type 'end' to stop)" << endl;
 			//inputting Marvel titles
 			for (int i = 0; i < MAX; i++) {
+				string marvelInput;
 				cout << "Title " << i + 1 << ": ";
 				getline(cin, marvelProject[i].title);
 				if (marvelProject[i].title == "end") {
 					break;
+				}
+				try {
+					double rating = stod(marvelInput);
+					if (rating > 0.0 && rating <= 10.0) {
+						marvelProject[i].rating = rating;
+					}
+					else {
+						cout << "Rating must be between 0.0 and 10.0";
+						i--;
+						continue;
+					}
+				}
+				catch (invalid_argument&) {
+					cout << "Invalid rating input! Please enter a numeric value." << endl;
+					i--;
+					continue;
+				}
+				catch (out_of_range&) {
+					cout << "out of range!" << endl;
+					i--;
+					continue;
 				}
 				cout << marvelProject[i].title << "'s rating: ";
 				cin >> marvelProject[i].rating;
@@ -184,6 +229,7 @@ int main() {
 	delete[] allProject;
 	return 0;
 }
+
 //Options Menu function
 void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[], 
 	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
@@ -215,8 +261,15 @@ void openDCFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle
 		cout << "Error opening file!" << endl;
 		return;
 	}
-	while (dcFile >> dcTitle[dcCount].title >> dcTitle[dcCount].rating) {
-		cout << dcTitle[dcCount].title << " " << dcTitle[dcCount].rating << endl;
+	if (dcOpen == 0) {
+		cout << "Riddle me this, why didn't you add to the file!? - Riddler" << endl;
+		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
+	}
+
+	if (marvelOpen == 1) {
+		while (dcFile >> dcTitle[dcCount].title >> dcTitle[dcCount].rating) {
+			cout << dcTitle[dcCount].title << " " << dcTitle[dcCount].rating << endl;
+		}
 	}
 	dcFile.close();
 }
@@ -230,7 +283,7 @@ void openMarvelFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcT
 	}
 	if (marvelOpen == 0) {
 		cout <<  "You should've added to the file! *Snap* - Thanos" << endl;
-		
+		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 
 	if (marvelOpen == 1) {
@@ -331,7 +384,7 @@ void addTitle(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[]
 			dcFile << dcTitle[i].title << ": " << dcTitle[i].rating << endl;
 		}
 		dcFile.close();
-
+		dcOpen++;
 		cout << "DC file has been updated!" << endl;
 		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
