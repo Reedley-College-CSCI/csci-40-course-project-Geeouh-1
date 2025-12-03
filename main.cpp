@@ -34,7 +34,7 @@ void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 	movieShow allTitle[], int& allCount);
 void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount);
-void addToFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
+void addTitle(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
 	movieShow allTitle[], int& allCount);
 //Sorting functions
 void sortRatingDC(movieShow dcTitle[], int& dcCount);
@@ -64,17 +64,19 @@ int main() {
 	while (true) {
 
 		getline(cin, fileName);
+
 		
 		if (fileName == "dc") {
 			if (dcOpen == 1) {
 				if (fileName == "dc") {
+					cout << endl;
 					cout << "Can't add to DC File right now. Please wait until the Options Menu." << endl;
 					cout << "Please choose another file to add to('marvel' or 'exit' to leave): ";
 					continue;
 				}
 			}
 			ofstream dcFile;
-			dcFile.open("dc.txt");
+			dcFile.open("dc.txt", ios::app);
 			if (!dcFile) {
 				cout << "Error opening file!" << endl;
 				return 1;
@@ -85,19 +87,16 @@ int main() {
 			for (int i = 0; i < MAX; i++) {
 				cout << "Title " << i + 1 << ": ";
 				getline(cin, dcProject[i].title);
-
 				if (dcProject[i].title == "end") {
 					break;
 				}
+				cout << dcProject[i].title << "'s rating: ";
+				cin >> dcProject[i].rating;
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				dcCount++;
 				allCount++;
 			}
-			//inputting DC ratings
-			cout << endl << "Please enter your ratings (out of 10.0)" << endl;
-			for (int i = 0; i < dcCount; i++) {
-				cout << dcProject[i].title << ": ";
-				cin >> dcProject[i].rating;
-			}
+			
 			for (int i = 0; i < dcCount; i++) {
 				dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 				allFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
@@ -139,15 +138,11 @@ int main() {
 					if (marvelProject[i].title == "end") {
 						break;
 					}
+					cout << marvelProject[i].title << "'s rating: ";
+					cin >> marvelProject[i].rating;
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 					marvelCount++;
 					allCount++;
-				}
-				//inputting Marvel ratings
-				cout << endl << "Please enter your ratings (out of 10.0)" << endl;
-				for (int i = 0; i < marvelCount; i++) {
-					cout << marvelProject[i].title << ": ";
-					cin >> marvelProject[i].rating;
-
 				}
 				for (int i = 0; i < marvelCount; i++) {
 					marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
@@ -173,10 +168,7 @@ int main() {
 			break;
 		}
 
-		else if(fileName != "dc" && fileName != "marvel" && fileName != "exit") {
-			cout << "Invalid file name!" << endl;
-			cout << "Please choose another file to add to('dc', 'marvel' or 'exit' to leave): ";
-		}
+		
 	}
 	allFile.close();
 
@@ -208,7 +200,8 @@ void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitl
 		sortByRating(dcTitle, dcCount, marvelTitle, marvelCount, allTitle, allCount);
 	}
 	if (option == "D" || option == "d") {
-		cout << "placeholder";
+		addTitle( dcTitle, dcCount, marvelTitle, marvelCount,
+			allTitle,  allCount);
 	}
 }
 //Reading File functions
@@ -284,10 +277,44 @@ void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], in
 	}
 
 }
-void addToFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount) {
-	cout << "Please choose a file you would like to add to('dc' or 'marvel')" << endl;
 
+void addTitle(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
+	movieShow allTitle[], int& allCount) {
+
+	ofstream marvelFile;
+	ofstream dcFile;
+	int exCountDC = dcCount;
+	
+	cout << "Which file would you like to add titles to?(dc/marvel): ";
+	string addFileName;
+	cin >> addFileName;
+	cout << endl;
+	
+	if (addFileName == "dc") {
+		//adding to DC file
+		dcFile.open("dc.txt", ios::app);
+		
+		for (int i = dcCount; i < MAX; ++i) {
+			cout << "Title " << i + 1 << ": ";
+			cin.ignore();
+			getline(cin, dcTitle[i].title);
+			if (dcTitle[i].title == "nd") {
+				break;
+			}
+			cout << dcTitle[i].title << "'s rating: ";
+			cin >> dcTitle[i].rating;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			dcCount++;
+		}
+		for (int i = exCountDC; i < dcCount; i++) {
+			dcFile << dcTitle[i].title << ": " << dcTitle[i].rating << endl;
+		}
+		dcFile.close();
+
+		cout << "DC file has been updated!" << endl;
+		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount);
+	}
+	
 }
 //sorting functions
 void sortRatingDC(movieShow dcTitle[], int& dcCount) {
