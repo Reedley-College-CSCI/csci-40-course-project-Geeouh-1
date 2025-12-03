@@ -98,13 +98,14 @@ int main() {
 					break;
 				}
 				cout << dcProject[i].title << "'s rating: ";
+				getline(cin, DCinput);
 				try {
 					double rating = stod(DCinput);
 					if (rating > 0.0 && rating <= 10.0) {
 						dcProject[i].rating = rating;
 					}
 					else {
-						cout << "Rating must be between 0.0 and 10.0";
+						cout << "Rating must be between 0.0 and 10.0" << endl;
 						i--;
 						continue;
 					}
@@ -120,7 +121,7 @@ int main() {
 					continue;
 				}
 				
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				
 
 				dcFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
 				allFile << dcProject[i].title << ": " << dcProject[i].rating << endl;
@@ -167,13 +168,15 @@ int main() {
 				if (marvelProject[i].title == "end") {
 					break;
 				}
+				cout << marvelProject[i].title << "'s rating: ";
+				getline(cin, marvelInput);
 				try {
 					double rating = stod(marvelInput);
 					if (rating > 0.0 && rating <= 10.0) {
 						marvelProject[i].rating = rating;
 					}
 					else {
-						cout << "Rating must be between 0.0 and 10.0";
+						cout << "Rating must be between 0.0 and 10.0" << endl;
 						i--;
 						continue;
 					}
@@ -188,9 +191,6 @@ int main() {
 					i--;
 					continue;
 				}
-				cout << marvelProject[i].title << "'s rating: ";
-				cin >> marvelProject[i].rating;
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 				marvelFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
 				allFile << marvelProject[i].title << ": " << marvelProject[i].rating << endl;
