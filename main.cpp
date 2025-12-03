@@ -67,7 +67,6 @@ int main() {
 
 		getline(cin, fileName);
 
-		
 		if (fileName == "dc") {
 			if (dcOpen == 1) {
 				if (fileName == "dc") {
@@ -107,11 +106,15 @@ int main() {
 			dcFile.close();
 			//After DC File is done, user will choose to leave or go to Marvel file
 				cout << "DC file has been updated!" << endl;
+				if (dcOpen == 1 && marvelOpen == 1) {
+					cout << endl << endl;
+					cout << "Both files have been updated! Proceeding to Options Menu..." << endl;
+					break;
+				}
 				cout << "Please choose another file to add to('marvel' or 'exit' to leave): ";
 			
 				
-		}
-			
+		}	
 		if (fileName == "marvel") {
 			if (marvelOpen == 1) {
 				if (fileName == "marvel") {
@@ -152,17 +155,20 @@ int main() {
 			marvelOpen++;
 			//After Marvel File is done, user will choose to leave or go to DC file
 			cout << "Marvel file has been updated!" << endl;
+			if (dcOpen == 1 && marvelOpen == 1) {
+				cout << endl << endl;
+				cout << "Both files have been updated! Proceeding to Options Menu..." << endl;
+				break;
+			}
 			cout << "Please choose another file to add to('dc' or 'exit' to leave): ";
 		}
-
 		if(fileName == "exit") {
 			cout << "Exiting the program..." << endl;
 			break;
 		}
-		if(dcOpen ==1 && marvelOpen ==1) {
-			cout << endl << endl;
-			cout << "Both files have been updated! Proceeding to Options Menu..." << endl;
-			break;
+		else {
+			cout << "please choose an option: ";
+			continue;
 		}
 	}
 	allFile.close();
