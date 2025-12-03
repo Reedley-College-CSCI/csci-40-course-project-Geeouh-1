@@ -27,23 +27,27 @@ struct movieShow {
 };
 
 //Reading files
-void openDCFile(movieShow dcTitle[], int& dcCount);
-void openMarvelFile(movieShow marvTitle[], int& marvelCount);
+void openDCFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
+void openMarvelFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
 void openAllFile(movieShow allTitle[], int& allCount);
 //Option choices
-void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount);
-void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount);
-void addTitle(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount);
+void viewFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
+void sortByRating(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
+void addTitle(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
 //Sorting functions
-void sortRatingDC(movieShow dcTitle[], int& dcCount);
+void sortRatingDC(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
 void sortRatingAll(movieShow allTitle[], int& allCount);
-void sortRatingMarvel(movieShow marvelTitle[], int& marvelCount);
+void sortRatingMarvel(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
 //Options Menu
 void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
-	int& allCount, int& marvelCount, int& dcCount);
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen);
 
 int main() {
 
@@ -58,7 +62,7 @@ int main() {
 	int dcOpen = 0;
 	int marvelOpen = 0;
 	//Main page of the project
-	cout << "Welcome to your favorite Marvel/DC Comics movies and shows inventory!" << endl;
+	cout << " -- Welcome to your favorite Marvel/DC Comics movies and shows inventory! -- " << endl;
 	cout << "Please enter the file you would like to add a movie/show to('dc' or 'marvel'): ";
 
 	ofstream allFile;
@@ -166,14 +170,13 @@ int main() {
 			cout << "Exiting the program..." << endl;
 			break;
 		}
-		else {
-			cout << "please choose an option: ";
-			continue;
+		if(fileName != "dc" && fileName != "marvel" && fileName != "exit") {
+			cout << "Invalid file name! Enter file name: ";
 		}
 	}
 	allFile.close();
 
-	optionsMenu(allProject, marvelProject, dcProject, allCount, marvelCount, dcCount);
+	optionsMenu(allProject, marvelProject, dcProject, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 
 
 	delete[] dcProject;
@@ -183,7 +186,7 @@ int main() {
 }
 //Options Menu function
 void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[], 
-	int& allCount, int& marvelCount, int& dcCount) {
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 	string option;
 	cout << endl;
 	cout << "Choose an option!" << endl;
@@ -194,19 +197,18 @@ void optionsMenu(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitl
 	cout << endl << "Option: ";
 	cin >> option;
 	if (option == "A" || option == "a") {
-		viewFile(dcTitle, dcCount,  marvelTitle,  marvelCount,
-			 allTitle, allCount);
+		viewFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	if (option == "B" || option == "b") {
-		sortByRating(dcTitle, dcCount, marvelTitle, marvelCount, allTitle, allCount);
+		sortByRating(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	if (option == "D" || option == "d") {
-		addTitle( dcTitle, dcCount, marvelTitle, marvelCount,
-			allTitle,  allCount);
+		addTitle(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 }
 //Reading File functions
-void openDCFile(movieShow dcTitle[], int& dcCount) {
+void openDCFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 	ifstream dcFile;
 	dcFile.open("dc.txt");
 	if (!dcFile) {
@@ -218,16 +220,25 @@ void openDCFile(movieShow dcTitle[], int& dcCount) {
 	}
 	dcFile.close();
 }
-void openMarvelFile(movieShow marvTitle[], int& marvelCount) {
+void openMarvelFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 	ifstream marvelFile;
 	marvelFile.open("marvel.txt");
 	if (!marvelFile) {
 		cout << "Error opening file!" << endl;
 		return;
 	}
-	while (marvelFile >> marvTitle[marvelCount].title >> marvTitle[marvelCount].rating) {
-		cout << marvTitle[marvelCount].title << " " << marvTitle[marvelCount].rating << endl;
+	if (marvelOpen == 0) {
+		cout <<  "You should've added to the file! *Snap* - Thanos" << endl;
+		
 	}
+
+	if (marvelOpen == 1) {
+		while (marvelFile >> marvelTitle[marvelCount].title >> marvelTitle[marvelCount].rating) {
+			cout << marvelTitle[marvelCount].title << " " << marvelTitle[marvelCount].rating << endl;
+		}
+	}
+	
 
 	marvelFile.close();
 }
@@ -244,51 +255,51 @@ void openAllFile(movieShow allTitle[], int& allCount) {
 	allFile.close();
 }
 //Option choices Functions
-void viewFile(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount) {
+void viewFile(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 	cout << "What file would you like to view? (dc/marvel/all): ";
 	string viewFileName;
 	cin >> viewFileName;
 	cout << endl;
 	if (viewFileName == "dc") {
-		openDCFile( dcTitle,  dcCount);
+		openDCFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	else if (viewFileName == "marvel") {
-		openMarvelFile(marvelTitle, marvelCount);
+		openMarvelFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	else if (viewFileName == "all") {
 		openAllFile(allTitle, allCount);
 	}
 	else {
 		cout << "Invalid file name!" << endl;
-		viewFile(dcTitle, dcCount, marvelTitle, marvelCount, allTitle, allCount);
+		viewFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 }
-void sortByRating(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount) {
+void sortByRating(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 	cout << "Which file would you like to sort by rating(dc/marvel/all): ";
 	string sortName;
 	cin >> sortName;
 	cout << endl;
 
 	if (sortName == "dc") {
-		sortRatingDC(dcTitle, dcCount);
+		sortRatingDC(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	if (sortName == "all") {
 		sortRatingAll(allTitle, allCount);
 	}
 	if (sortName == "marvel") {
-		sortRatingMarvel(marvelTitle, marvelCount);
+		sortRatingMarvel(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	else {
 		cout << "Invalid file name!" << endl;
-		sortByRating(dcTitle, dcCount, marvelTitle, marvelCount, allTitle, allCount);
+		sortByRating(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 
 }
 
-void addTitle(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& marvelCount,
-	movieShow allTitle[], int& allCount) {
+void addTitle(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 
 	ofstream marvelFile;
 	ofstream dcFile;
@@ -322,10 +333,10 @@ void addTitle(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 		dcFile.close();
 
 		cout << "DC file has been updated!" << endl;
-		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount);
+		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	if (addFileName == "marvel") {
-		//adding to DC file
+		//adding to marvel file
 		marvelFile.open("marvel.txt", ios::app);
 
 		for (int i = marvelCount; i < MAX; i++) {
@@ -346,15 +357,17 @@ void addTitle(movieShow dcTitle[], int& dcCount, movieShow marvelTitle[], int& m
 		marvelFile.close();
 
 		cout << "Marvel file has been updated!" << endl;
-		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount);
+		optionsMenu(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	else {
 		cout << "Invalid file name!" << endl;
+		addTitle(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 	}
 	
 }
 //sorting functions
-void sortRatingDC(movieShow dcTitle[], int& dcCount) {
+void sortRatingDC(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen) {
 	int dcRateSort;
 	cout << "How would you like to sort the DC file by rating (highest to lowest)?" << endl;
 	cout << "1) Highest to Lowest" << endl;
@@ -367,7 +380,7 @@ void sortRatingDC(movieShow dcTitle[], int& dcCount) {
 	}
 
 	if (dcRateSort == 1) {
-		openDCFile(dcTitle, dcCount);
+		openDCFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 		cout << endl;
 		bool swapped;
 		int j = 0;
@@ -395,7 +408,7 @@ void sortRatingDC(movieShow dcTitle[], int& dcCount) {
 	}
 
 	if (dcRateSort == 2) {
-		openDCFile(dcTitle, dcCount);
+		openDCFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 		cout << endl;
 		bool swapped;
 		int j = 0;
@@ -490,7 +503,8 @@ void sortRatingAll(movieShow allTitle[], int& allCount){
 
 	}
 }
-void sortRatingMarvel(movieShow marvelTitle[], int& marvelCount){
+void sortRatingMarvel(movieShow allTitle[], movieShow marvelTitle[], movieShow dcTitle[],
+	int& allCount, int& marvelCount, int& dcCount, int& marvelOpen, int& dcOpen){
 	int marvelRateSort;
 	cout << "How would you like to sort the DC file by rating (highest to lowest)?" << endl;
 	cout << "1) Highest to Lowest" << endl;
@@ -503,7 +517,7 @@ void sortRatingMarvel(movieShow marvelTitle[], int& marvelCount){
 	}
 
 	if (marvelRateSort == 1) {
-		openMarvelFile(marvelTitle, marvelCount);
+		openMarvelFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 		cout << endl;
 		bool swapped;
 		int j = 0;
@@ -531,7 +545,7 @@ void sortRatingMarvel(movieShow marvelTitle[], int& marvelCount){
 	}
 
 	if (marvelRateSort == 2) {
-		openMarvelFile(marvelTitle, marvelCount);
+		openMarvelFile(allTitle, marvelTitle, dcTitle, allCount, marvelCount, dcCount, marvelOpen, dcOpen);
 		cout << endl;
 		bool swapped;
 		int j = 0;
